@@ -7,4 +7,5 @@ urlpatterns = [
     path('json-2/', views.article_json_2, name='json_2'),
     path('json-3/', views.article_json_3, name='json_3'),
     path('articles/', views.article_list),
+    path('articles/<int:article_pk>/', views.article_detail),
 ]

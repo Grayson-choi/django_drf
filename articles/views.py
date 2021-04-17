@@ -4,7 +4,7 @@ from django.core import serializers
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
-from .serializers import ArticleListSerializer
+from .serializers import ArticleListSerializer, ArticleSerializer
 
 
 # 써드파티
@@ -52,8 +52,14 @@ def article_json_3(request):
     serializer = ArticleListSerializer(articles, many=True)
     return Response(serializer.data)
 
-@api_view()
+@api_view(['GET'])
 def article_list(request):
     articles = get_list_or_404(Article)
     serializer = ArticleListSerializer(articles, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def article_detail(request, article_pk):
+    article = get_object_or_404(Article, pk=article_pk) # 1개니까 get_object_or_404
+    serializer = ArticleSerializer(article)
     return Response(serializer.data)
