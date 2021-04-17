@@ -1,15 +1,15 @@
 from django.shortcuts import render, get_list_or_404, get_object_or_404
 from django.http.response import JsonResponse, HttpResponse
 from django.core import serializers
+
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
 
-from .serializers import ArticleListSerializer, ArticleSerializer
+from .serializers import ArticleListSerializer, ArticleSerializer, CommentSerializer
 
 
-# 써드파티
-from .models import Article # import 순서 강조해주기
+from .models import Article, Comment # import 순서 강조해주기
 
 # Create your views here.
 def article_html(request):
@@ -98,3 +98,10 @@ def article_detail(request, article_pk):
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(serializer.data)
+
+
+@api_view(['GET'])
+def comment_list(request):
+    comments = get_list_or_404(Comment)
+    serialize = CommentSerializer(comments, many=True)
+    return Response(serialize.data)
