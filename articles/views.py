@@ -1,10 +1,10 @@
-from django.shortcuts import render, get_list_or_404
+from django.shortcuts import render, get_list_or_404, get_object_or_404
 from django.http.response import JsonResponse, HttpResponse
 from django.core import serializers
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
-from .serializers import ArticleSerializer
+from .serializers import ArticleListSerializer
 
 
 # 써드파티
@@ -49,5 +49,11 @@ def article_json_2(request):
 @api_view(['GET']) # 아무것도 안넣으면 GET임
 def article_json_3(request):
     articles = get_list_or_404(Article)
-    serializer = ArticleSerializer(articles, many=True)
+    serializer = ArticleListSerializer(articles, many=True)
+    return Response(serializer.data)
+
+@api_view()
+def article_list(request):
+    articles = get_list_or_404(Article)
+    serializer = ArticleListSerializer(articles, many=True)
     return Response(serializer.data)
