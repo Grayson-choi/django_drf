@@ -1,6 +1,12 @@
 from django.shortcuts import render, get_list_or_404
 from django.http.response import JsonResponse, HttpResponse
 from django.core import serializers
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+
+from .serializers import ArticleSerializer
+
+
 # 써드파티
 from .models import Article # import 순서 강조해주기
 
@@ -37,3 +43,11 @@ def article_json_2(request):
         articles
     )
     return HttpResponse(data, content_type='application/json') # content_type을 통해 body에 담긴 데이터가 어떤 것인지 알려준다.
+
+
+# @api_view(['GET']) .accepted_renderer not set on Response 에러가 보인다면 데코레이터를 붙여야한다.
+@api_view(['GET']) # 아무것도 안넣으면 GET임
+def article_json_3(request):
+    articles = get_list_or_404(Article)
+    serializer = ArticleSerializer(articles, many=True)
+    return Response(serializer.data)
