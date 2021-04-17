@@ -112,3 +112,12 @@ def comment_detail(request, comment_pk):
     comment = get_object_or_404(Comment, pk=comment_pk)
     serializer = CommentSerializer(comment)
     return Response(serializer.data)
+
+@api_view(['POST'])
+def comment_create(request, article_pk):
+    article = get_object_or_404(Article, pk=article_pk)
+    serializer = CommentSerializer(data=request.data)
+    if serializer.is_valid(raise_exception=True):
+        serializer.save(article=article)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
