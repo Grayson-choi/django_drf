@@ -107,7 +107,7 @@ def comment_list(request):
     return Response(serialize.data)
 
 
-@api_view(['GET', 'DELETE'])
+@api_view(['GET', 'DELETE', 'PUT'])
 def comment_detail(request, comment_pk):
     comment = get_object_or_404(Comment, pk=comment_pk)
     if request.method == "GET":
@@ -119,7 +119,17 @@ def comment_detail(request, comment_pk):
             'delete': f'댓글 {comment_pk}번이 삭제되었습니다.'
         }
         return Response(data, status=status.HTTP_204_NO_CONTENT)
-        
+    
+    elif request.method == "PUT":
+        serializer = CommentSerializer(comment, data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data)
+            
+
+
+
+
 
 
 
