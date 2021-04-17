@@ -76,8 +76,20 @@ def article_list(request):
 
 
 
-@api_view(['GET'])
+@api_view(['GET', 'DELETE'])
 def article_detail(request, article_pk):
     article = get_object_or_404(Article, pk=article_pk) # 1개니까 get_object_or_404
-    serializer = ArticleSerializer(article)
-    return Response(serializer.data)
+    print("ARTICLE")
+    if request.method == "GET":
+        print("get")
+        serializer = ArticleSerializer(article)
+        return Response(serializer.data)
+    
+    elif request.method == 'DELETE':
+        article.delete()
+        print("delete")
+        data = {
+            'delete': f'데이터 {article_pk}번이 삭제되었습니다.'
+        }
+        return Response(data, status=status.HTTP_204_NO_CONTENT)
+
