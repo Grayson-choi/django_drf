@@ -105,3 +105,10 @@ def comment_list(request):
     comments = get_list_or_404(Comment)
     serialize = CommentSerializer(comments, many=True)
     return Response(serialize.data)
+
+
+@api_view(['GET'])
+def comment_detail(request, comment_pk):
+    comment = get_object_or_404(Comment, pk=comment_pk)
+    serializer = CommentSerializer(comment)
+    return Response(serializer.data)
