@@ -107,11 +107,21 @@ def comment_list(request):
     return Response(serialize.data)
 
 
-@api_view(['GET'])
+@api_view(['GET', 'DELETE'])
 def comment_detail(request, comment_pk):
     comment = get_object_or_404(Comment, pk=comment_pk)
-    serializer = CommentSerializer(comment)
-    return Response(serializer.data)
+    if request.method == "GET":
+        serializer = CommentSerializer(comment)
+        return Response(serializer.data)
+    elif request.method == "DELETE":
+        comment.delete()
+        data = {
+            'delete': f'댓글 {comment_pk}번이 삭제되었습니다.'
+        }
+        return Response(data, status=status.HTTP_204_NO_CONTENT)
+        
+
+
 
 @api_view(['POST'])
 def comment_create(request, article_pk):
@@ -120,4 +130,3 @@ def comment_create(request, article_pk):
     if serializer.is_valid(raise_exception=True):
         serializer.save(article=article)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-        
