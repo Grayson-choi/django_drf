@@ -18,6 +18,7 @@ class CommentSerializer(serializers.ModelSerializer):
         read_only_fields = ('article',)
 
 
+
 class ArticleSerializer(serializers.ModelSerializer):
     comment_set = CommentSerializer(many=True, read_only=True)
     comment_count = serializers.IntegerField(source='comment_set.count', read_only=True)

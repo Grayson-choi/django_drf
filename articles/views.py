@@ -2,6 +2,10 @@ from django.shortcuts import render, get_list_or_404, get_object_or_404
 from django.http.response import JsonResponse, HttpResponse
 from django.core import serializers
 
+from drf_yasg.utils import swagger_auto_schema    # 임포트
+from drf_yasg import openapi
+
+
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
@@ -53,6 +57,10 @@ def article_json_3(request):
     serializer = ArticleListSerializer(articles, many=True)
     return Response(serializer.data)
 
+
+user_response = openapi.Response('article List를 요청했을 때', ArticleSerializer)
+
+@swagger_auto_schema(method='GET', responses={200: user_response})
 @api_view(['GET', 'POST'])
 def article_list(request):
     if request.method == 'GET':
@@ -126,7 +134,7 @@ def comment_detail(request, comment_pk):
             serializer.save()
             return Response(serializer.data)
             
-
+@swagger_auto_schema(methods=['POST'], request_body=CommentSerializer)
 @api_view(['POST'])
 def comment_create(request, article_pk):
     article = get_object_or_404(Article, pk=article_pk)

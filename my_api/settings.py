@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'django_seed',
     'django_extensions',
     'rest_framework',
+    'drf_yasg',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
