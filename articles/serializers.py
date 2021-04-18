@@ -7,11 +7,14 @@ class ArticleListSerializer(serializers.ModelSerializer): # 모델 폼과 유사
         model = Article
         fields = ('id', 'title')
 
-class ArticleSerializer(serializers.ModelSerializer):
 
+class ArticleSerializer(serializers.ModelSerializer):
+    comment_set = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    
     class Meta:
         model = Article
         fields = '__all__'
+
 
 class CommentSerializer(serializers.ModelSerializer):
     

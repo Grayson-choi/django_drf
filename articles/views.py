@@ -127,12 +127,6 @@ def comment_detail(request, comment_pk):
             return Response(serializer.data)
             
 
-
-
-
-
-
-
 @api_view(['POST'])
 def comment_create(request, article_pk):
     article = get_object_or_404(Article, pk=article_pk)
